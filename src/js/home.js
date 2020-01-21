@@ -84,16 +84,28 @@ fetch('https://randomuser.me/api/')
           </div>`);
   }
 
-  const $actioncontainer = document.querySelector('#action');
+ 
 
-  actionlist.data.movies.forEach((movie)=>{
-   // debugger
-    const HTMLString=videoitemtemplate(movie);
+  function createTemplate(HTMLString){
+    
     const html= document.implementation.createHTMLDocument(); 
     html.body.innerHTML= HTMLString;
-    $actioncontainer.append(html.body.children[0]);
-    console.log(HTMLString);
-  });
+   
+    return html.body.children[0];
+  }
+  function renderMoviesList(list,container){
+    container.children[0].remove();
+    list.forEach((movie)=>{
+      // debugger
+       const HTMLString=videoitemtemplate(movie);
+      
+       const movieElement= createTemplate(HTMLString);
+       
+      container.append( movieElement);
+    
+     });
+  }
+  
 
   /* let terrorlist;
    getData('https://yts.lt/api/v2/list_movies.json?genre=terror').then(
@@ -102,15 +114,19 @@ fetch('https://randomuser.me/api/')
        terrorlist=data;
      }
    ); */
-  console.log(actionlist, dramalist, animationlist);
+  //console.log(actionlist, dramalist, animationlist);
 
  // const $actioncontainer = document.querySelector('#action');
-  const $dramacontainer = document.getElementById('#drama');
-  const $animationcontainer = document.getElementById('#animation');
+ const $actioncontainer = document.querySelector('#action');
+ renderMoviesList(actionlist.data.movies,$actioncontainer);
+  const $dramacontainer = document.getElementById('drama');
+  renderMoviesList(dramalist.data.movies,$dramacontainer);
+  const $animationcontainer = document.getElementById('animation');
+  renderMoviesList(animationlist.data.movies,$animationcontainer);
 
-  const $featuringcontainer = document.getElementById('#featuring');
-  const $form = document.getElementById('#form');
-  const $home = document.getElementById('#home');
+  const $featuringcontainer = document.getElementById('featuring');
+  const $form = document.getElementById('form');
+  const $home = document.getElementById('home');
 
 
   const $modal = document.getElementById('modal');
