@@ -70,6 +70,28 @@ fetch('https://randomuser.me/api/')
   const actionlist = await getData('https://yts.lt/api/v2/list_movies.json?genre=action');
   const dramalist = await getData('https://yts.lt/api/v2/list_movies.json?genre=drama');
   const animationlist = await getData('https://yts.lt/api/v2/list_movies.json?genre=animation');
+
+  
+
+  function videoitemtemplate(movie){
+    return (`<div class="primaryPlaylistItem">
+          <div class="primaryPlaylistItem-image">
+            <img src="${movie.medium_cover_image}">
+        </div>
+            <h4 class="primaryPlaylistItem-title">
+            ${movie.title}
+        </h4>
+          </div>`);
+  }
+
+
+
+  actionlist.data.movies.forEach((movie)=>{
+   // debugger
+    const HTMLString=videoitemtemplate(movie);
+    console.log(HTMLString);
+  });
+
   /* let terrorlist;
    getData('https://yts.lt/api/v2/list_movies.json?genre=terror').then(
      function(data){
@@ -90,9 +112,14 @@ fetch('https://randomuser.me/api/')
 
   const $modal = document.getElementById('modal');
   const $overlay = document.getElementById('overlay');
-  const $hidemodal = document.getElementById('hide-modal');.
+  const $hidemodal = document.getElementById('hide-modal');
 
   $modalimage= $modal.querySelector('img');
   $modaltitle= $modal.querySelector('h1');
   $modaldescription= $modal.querySelector('p');
+
+  
+ // console.log(videoitemtemplate("src/images/covers/bitcoin.jpg","bitcoin"));
+
+
 })()
