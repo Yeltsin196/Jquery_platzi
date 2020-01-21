@@ -84,11 +84,14 @@ fetch('https://randomuser.me/api/')
           </div>`);
   }
 
-
+  const $actioncontainer = document.querySelector('#action');
 
   actionlist.data.movies.forEach((movie)=>{
    // debugger
     const HTMLString=videoitemtemplate(movie);
+    const html= document.implementation.createHTMLDocument(); 
+    html.body.innerHTML= HTMLString;
+    $actioncontainer.append(html.body.children[0]);
     console.log(HTMLString);
   });
 
@@ -101,7 +104,7 @@ fetch('https://randomuser.me/api/')
    ); */
   console.log(actionlist, dramalist, animationlist);
 
-  const $actioncontainer = document.querySelector('#action');
+ // const $actioncontainer = document.querySelector('#action');
   const $dramacontainer = document.getElementById('#drama');
   const $animationcontainer = document.getElementById('#animation');
 
