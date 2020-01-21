@@ -61,15 +61,15 @@ fetch('https://randomuser.me/api/')
 
 (async function load() {
 
-  async function getData(url){
+  async function getData(url) {
     const response = await fetch(url);
     const data = await response.json();
     return data;
   }
   //  await
-  const actionlist= await getData('https://yts.lt/api/v2/list_movies.json?genre=action');
-  const dramalist= await getData('https://yts.lt/api/v2/list_movies.json?genre=drama');
-  const animationlist= await getData('https://yts.lt/api/v2/list_movies.json?genre=animation');
+  const actionlist = await getData('https://yts.lt/api/v2/list_movies.json?genre=action');
+  const dramalist = await getData('https://yts.lt/api/v2/list_movies.json?genre=drama');
+  const animationlist = await getData('https://yts.lt/api/v2/list_movies.json?genre=animation');
   /* let terrorlist;
    getData('https://yts.lt/api/v2/list_movies.json?genre=terror').then(
      function(data){
@@ -77,6 +77,22 @@ fetch('https://randomuser.me/api/')
        terrorlist=data;
      }
    ); */
-  console.log(actionlist,dramalist,animationlist);
-  
+  console.log(actionlist, dramalist, animationlist);
+
+  const $actioncontainer = document.querySelector('#action');
+  const $dramacontainer = document.getElementById('#drama');
+  const $animationcontainer = document.getElementById('#animation');
+
+  const $featuringcontainer = document.getElementById('#featuring');
+  const $form = document.getElementById('#form');
+  const $home = document.getElementById('#home');
+
+
+  const $modal = document.getElementById('modal');
+  const $overlay = document.getElementById('overlay');
+  const $hidemodal = document.getElementById('hide-modal');.
+
+  $modalimage= $modal.querySelector('img');
+  $modaltitle= $modal.querySelector('h1');
+  $modaldescription= $modal.querySelector('p');
 })()
