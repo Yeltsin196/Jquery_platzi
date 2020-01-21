@@ -72,9 +72,24 @@ fetch('https://randomuser.me/api/')
   const $home = document.getElementById('home');
 
   const $form = document.getElementById('form');
+  const $featuringcontainer = document.getElementById('featuring');
+
+  function setAttributes($element,attributes){
+    for(const attribute in attributes){
+      $element.setAttribute(attribute,attributes[attribute]);
+    }
+  }
+
   $form.addEventListener('submit',(event)=>{
     event.preventDefault();
     $home.classList.add('search-active');
+    $loader = document.createElement('img');
+    setAttributes($loader,{
+      src:'src/images/loader.gif',
+      height:50,
+      width:50
+    });
+    $featuringcontainer.append($loader);
   })  
   //  await
   const actionlist = await getData('https://yts.lt/api/v2/list_movies.json?genre=action');
@@ -142,7 +157,7 @@ fetch('https://randomuser.me/api/')
   const $animationcontainer = document.getElementById('animation');
   renderMoviesList(animationlist.data.movies,$animationcontainer);
 
-  const $featuringcontainer = document.getElementById('featuring');
+  
  
 
 
