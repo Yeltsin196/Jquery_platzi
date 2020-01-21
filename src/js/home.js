@@ -7,20 +7,20 @@ function cambiarNombre(nuevoNombre) {
   cambia = nuevoNombre
 }
 
-const getUserAll = new Promise(function(res,err){
-  setTimeout(function(){
+const getUserAll = new Promise(function (res, err) {
+  setTimeout(function () {
     //luego de 3 segundos
-   res('todo bien');
-  },5000);
- 
+    res('todo bien');
+  }, 5000);
+
 });
 
-const getUser = new Promise(function(res,err){
-  setTimeout(function(){
+const getUser = new Promise(function (res, err) {
+  setTimeout(function () {
     //luego de 3 segundos
-   res('todo bien');
-  },3000);
- 
+    res('todo bien');
+  }, 3000);
+
 });
 
 /* getUser.then(function(){
@@ -31,30 +31,52 @@ const getUser = new Promise(function(res,err){
 
 Promise.all([
   getUser,
-  getUserAll 
-]).then(function(message){
+  getUserAll
+]).then(function (message) {
   console.log(message);
-}).catch(function(message){
+}).catch(function (message) {
   console.log(message)
 });
 
 
- $.ajax('https://randomuser.me/api/',{
-  method:'GET',
-  success: function(data){
+$.ajax('https://randomuser.me/api/', {
+  method: 'GET',
+  success: function (data) {
     console.log(data);
   },
-  error:function(error){
+  error: function (error) {
     console.log(error);
   }
-}); 
+});
 
 fetch('https://randomuser.me/api/')
-.then(function (response){
-  //console.log(response)
- return  response.json();
-}).then(function(user){
-  console.log('user',user.results[0].name.first);
-}).catch(function(){
-  console.log('algo fallo');
-});
+  .then(function (response) {
+    //console.log(response)
+    return response.json();
+  }).then(function (user) {
+    console.log('user', user.results[0].name.first);
+  }).catch(function () {
+    console.log('algo fallo');
+  });
+
+(async function load() {
+
+  async function getData(url){
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+  }
+  //  await
+  const actionlist= await getData('https://yts.lt/api/v2/list_movies.json?genre=action');
+  const dramalist= await getData('https://yts.lt/api/v2/list_movies.json?genre=drama');
+  const animationlist= await getData('https://yts.lt/api/v2/list_movies.json?genre=animation');
+  /* let terrorlist;
+   getData('https://yts.lt/api/v2/list_movies.json?genre=terror').then(
+     function(data){
+       console.log('terrolist',data);
+       terrorlist=data;
+     }
+   ); */
+  console.log(actionlist,dramalist,animationlist);
+  
+})()
