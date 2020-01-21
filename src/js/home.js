@@ -67,10 +67,14 @@ fetch('https://randomuser.me/api/')
     return data;
   }
 
+
+  
+  const $home = document.getElementById('home');
+
   const $form = document.getElementById('form');
   $form.addEventListener('submit',(event)=>{
     event.preventDefault();
-    
+    $home.classList.add('search-active');
   })  
   //  await
   const actionlist = await getData('https://yts.lt/api/v2/list_movies.json?genre=action');
@@ -102,7 +106,7 @@ fetch('https://randomuser.me/api/')
 
   function addEventClick($element){
     $element.addEventListener('click',function(){
-      alert('click');
+      showModal();
     })
   }
 
@@ -140,7 +144,6 @@ fetch('https://randomuser.me/api/')
 
   const $featuringcontainer = document.getElementById('featuring');
  
-  const $home = document.getElementById('home');
 
 
   const $modal = document.getElementById('modal');
@@ -154,5 +157,13 @@ fetch('https://randomuser.me/api/')
   
  // console.log(videoitemtemplate("src/images/covers/bitcoin.jpg","bitcoin"));
 
-
+     function showModal(){
+        $overlay.classList.add('active');
+        $modal.style.animation='modalIn .8s forwards';
+     }
+     $hidemodal.addEventListener('click',hideModal);
+     function hideModal(){
+      $overlay.classList.remove('active');
+      $modal.style.animation='modalOut .8s forwards';
+     }
 })()
