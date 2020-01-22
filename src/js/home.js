@@ -68,24 +68,24 @@ fetch('https://randomuser.me/api/')
   }
 
 
-  
+
   const $home = document.getElementById('home');
 
   const $form = document.getElementById('form');
   const $featuringcontainer = document.getElementById('featuring');
 
-  function setAttributes($element,attributes){
-    for(const attribute in attributes){
-      $element.setAttribute(attribute,attributes[attribute]);
+  function setAttributes($element, attributes) {
+    for (const attribute in attributes) {
+      $element.setAttribute(attribute, attributes[attribute]);
     }
   }
 
 
   const BASE_API = 'https://yts.lt/api/v2/';
 
-  function featuringTemplate(peli){
-   
-     peli2 = `<div class="featuring">
+  function featuringTemplate(peli) {
+
+    peli2 = `<div class="featuring">
         <div class="featuring-image">
           <img src="${peli.medium_cover_image}" width="70" height="100" alt="">
         </div>
@@ -93,41 +93,41 @@ fetch('https://randomuser.me/api/')
           <p class="featuring-title">Pelicula encontrada</p>
           <p class="featuring-album">${peli.title}</p>
         </div>
-      </div>`; 
-     return peli2;
+      </div>`;
+    return peli2;
   }
 
-  $form.addEventListener('submit', async (event)=>{
+  $form.addEventListener('submit', async (event) => {
     event.preventDefault();
     $home.classList.add('search-active');
     $loader = document.createElement('img');
-    setAttributes($loader,{
-      src:'src/images/loader.gif',
-      height:50,
-      width:50
+    setAttributes($loader, {
+      src: 'src/images/loader.gif',
+      height: 50,
+      width: 50
     });
     $featuringcontainer.append($loader);
 
-    const data= new FormData($form);
-    const  {
-      data:{
-        movies:pelicula
+    const data = new FormData($form);
+    const {
+      data: {
+        movies: pelicula
       }
     } = await getData(`${BASE_API}list_movies.json?limit=1&query_term=${data.get('name')}`);
-    
-    const HTMLString= featuringTemplate(pelicula[0]);
-    
-    
+
+    const HTMLString = featuringTemplate(pelicula[0]);
+
+
     $featuringcontainer.innerHTML = HTMLString;
-  })  
+  })
   //  await
-  const actionlist = await getData(`${BASE_API}list_movies.json?genre=action`);
-  const dramalist = await getData(`${BASE_API}list_movies.json?genre=drama`);
-  const animationlist = await getData(`${BASE_API}list_movies.json?genre=animation`);
+  const { data: { movies: actionlist } } = await getData(`${BASE_API}list_movies.json?genre=action`);
+  const { data: { movies: dramalist } } = await getData(`${BASE_API}list_movies.json?genre=drama`);
+  const { data: { movies: animationlist } } = await getData(`${BASE_API}list_movies.json?genre=animation`);
 
-  
 
-  function videoitemtemplate(movie,category){
+
+  function videoitemtemplate(movie, category) {
     return (`<div class="primaryPlaylistItem" data-id="${movie.id}" data-category="${category}">
           <div class="primaryPlaylistItem-image">
             <img src="${movie.medium_cover_image}">
@@ -138,36 +138,36 @@ fetch('https://randomuser.me/api/')
           </div>`);
   }
 
- 
 
-  function createTemplate(HTMLString){
-    
-    const html= document.implementation.createHTMLDocument(); 
-    html.body.innerHTML= HTMLString;
+
+  function createTemplate(HTMLString) {
+
+    const html = document.implementation.createHTMLDocument();
+    html.body.innerHTML = HTMLString;
 
     return html.body.children[0];
   }
 
-  function addEventClick($element){
-    $element.addEventListener('click',function(){
+  function addEventClick($element) {
+    $element.addEventListener('click', function () {
       showModal($element);
     })
   }
 
-  function renderMoviesList(list,container,category){
-    
+  function renderMoviesList(list, container, category) {
+
     container.children[0].remove();
-    list.forEach((movie)=>{
+    list.forEach((movie) => {
       // debugger
-       const HTMLString=videoitemtemplate(movie,category);
-      
-       const movieElement= createTemplate(HTMLString);
-       
-      container.append( movieElement);
+      const HTMLString = videoitemtemplate(movie, category);
+
+      const movieElement = createTemplate(HTMLString);
+
+      container.append(movieElement);
       addEventClick(movieElement);
-     });
+    });
   }
-  
+
 
   /* let terrorlist;
    getData('https://yts.lt/api/v2/list_movies.json?genre=terror').then(
@@ -178,38 +178,67 @@ fetch('https://randomuser.me/api/')
    ); */
   //console.log(actionlist, dramalist, animationlist);
 
- // const $actioncontainer = document.querySelector('#action');
- const $actioncontainer = document.querySelector('#action');
- renderMoviesList(actionlist.data.movies,$actioncontainer,'action');
+  // const $actioncontainer = document.querySelector('#action');
+  const $actioncontainer = document.querySelector('#action');
+  renderMoviesList(actionlist, $actioncontainer, 'action');
   const $dramacontainer = document.getElementById('drama');
-  renderMoviesList(dramalist.data.movies,$dramacontainer,'drama');
+  renderMoviesList(dramalist, $dramacontainer, 'drama');
   const $animationcontainer = document.getElementById('animation');
-  renderMoviesList(animationlist.data.movies,$animationcontainer,'animation');
+  renderMoviesList(animationlist, $animationcontainer, 'animation');
 
-  
- 
+
+
 
 
   const $modal = document.getElementById('modal');
   const $overlay = document.getElementById('overlay');
   const $hidemodal = document.getElementById('hide-modal');
 
-  $modalimage= $modal.querySelector('img');
-  $modaltitle= $modal.querySelector('h1');
-  $modaldescription= $modal.querySelector('p');
+  const $modalimage = $modal.querySelector('img');
+  const $modaltitle = $modal.querySelector('h1');
+  const $modaldescription = $modal.querySelector('p');
 
+
+  // console.log(videoitemtemplate("src/images/covers/bitcoin.jpg","bitcoin"));
+     function findById(list,id){
+      return  list.find((movie) => {
+
+        return movie.id === parseInt(id, 10);
+      });
+     }
+
+  function findMovie(id, category) {
+
+    switch (category) {
+      case 'action': {
+        return    findById( actionlist,id);
+      }
+      case 'drama': {
+        return   findById( dramalist,id);
+      }
+      default: {
+      return  findById( animationlist,id);
+      }
+    }
+
+
+
+  }
+  function showModal($element) {
+    $overlay.classList.add('active');
+    $modal.style.animation = 'modalIn .8s forwards';
+    const id = $element.dataset.id;
+    const category = $element.dataset.category;
+    const data = findMovie(id, category);
+    
+  $modalimage.setAttribute('src',data.medium_cover_image);
+  $modaltitle.textContent= data.title;
+  $modaldescription.textContent = data.description_full;
   
- // console.log(videoitemtemplate("src/images/covers/bitcoin.jpg","bitcoin"));
-
-     function showModal($element){
-        $overlay.classList.add('active');
-        $modal.style.animation='modalIn .8s forwards';
-        const id = $element.dataset.id;
-        const category= $element.dataset.category;
-     }
-     $hidemodal.addEventListener('click',hideModal);
-     function hideModal(){
-      $overlay.classList.remove('active');
-      $modal.style.animation='modalOut .8s forwards';
-     }
+  }
+  $hidemodal.addEventListener('click', hideModal);
+  function hideModal() {
+    $overlay.classList.remove('active');
+    $modal.style.animation = 'modalOut .8s forwards';
+  }
 })()
