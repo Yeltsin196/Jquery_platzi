@@ -64,7 +64,11 @@ fetch('https://randomuser.me/api/')
   async function getData(url) {
     const response = await fetch(url);
     const data = await response.json();
-    return data;
+    if(data.data.movie_count>0){
+      return data;
+    
+    }
+   
   }
 
 
@@ -109,16 +113,25 @@ fetch('https://randomuser.me/api/')
     $featuringcontainer.append($loader);
 
     const data = new FormData($form);
-    const {
-      data: {
-        movies: pelicula
-      }
-    } = await getData(`${BASE_API}list_movies.json?limit=1&query_term=${data.get('name')}`);
 
-    const HTMLString = featuringTemplate(pelicula[0]);
+    try {
+      const {
+        data: {
+          movies: pelicula
+        }
+      } = await getData(`${BASE_API}list_movies.json?limit=1&query_term=${data.get('name')}`);
+  
+      const HTMLString = featuringTemplate(pelicula[0]);
+  
+  
+      $featuringcontainer.innerHTML = HTMLString;
+    } catch (error) {
+      alert('No se encontro ningun resultado');
+      $loader.remove();
+      $home.classList.remove('search-active');
+    }
 
-
-    $featuringcontainer.innerHTML = HTMLString;
+    
   })
   //  await
 
