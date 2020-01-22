@@ -121,9 +121,7 @@ fetch('https://randomuser.me/api/')
     $featuringcontainer.innerHTML = HTMLString;
   })
   //  await
-  const { data: { movies: actionlist } } = await getData(`${BASE_API}list_movies.json?genre=action`);
-  const { data: { movies: dramalist } } = await getData(`${BASE_API}list_movies.json?genre=drama`);
-  const { data: { movies: animationlist } } = await getData(`${BASE_API}list_movies.json?genre=animation`);
+
 
 
 
@@ -162,12 +160,18 @@ fetch('https://randomuser.me/api/')
       const HTMLString = videoitemtemplate(movie, category);
 
       const movieElement = createTemplate(HTMLString);
-
+      const image = movieElement.querySelector('img');
+      image.addEventListener('load',(event)=>{
+       event.srcElement.classList.add('fadeIn');
+      });
+     // movieElement.classList.add('fadeIn');
       container.append(movieElement);
       addEventClick(movieElement);
     });
   }
-
+  
+  
+ 
 
   /* let terrorlist;
    getData('https://yts.lt/api/v2/list_movies.json?genre=terror').then(
@@ -179,12 +183,18 @@ fetch('https://randomuser.me/api/')
   //console.log(actionlist, dramalist, animationlist);
 
   // const $actioncontainer = document.querySelector('#action');
+  const { data: { movies: actionlist } } = await getData(`${BASE_API}list_movies.json?genre=action`);
   const $actioncontainer = document.querySelector('#action');
   renderMoviesList(actionlist, $actioncontainer, 'action');
+  
+  const { data: { movies: dramalist } } = await getData(`${BASE_API}list_movies.json?genre=drama`);
   const $dramacontainer = document.getElementById('drama');
   renderMoviesList(dramalist, $dramacontainer, 'drama');
+
+ const { data: { movies: animationlist } } = await getData(`${BASE_API}list_movies.json?genre=animation`);
   const $animationcontainer = document.getElementById('animation');
   renderMoviesList(animationlist, $animationcontainer, 'animation');
+ 
 
 
 
