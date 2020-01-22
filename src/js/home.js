@@ -127,8 +127,8 @@ fetch('https://randomuser.me/api/')
 
   
 
-  function videoitemtemplate(movie){
-    return (`<div class="primaryPlaylistItem">
+  function videoitemtemplate(movie,category){
+    return (`<div class="primaryPlaylistItem" data-id="${movie.id}" data-category="${category}">
           <div class="primaryPlaylistItem-image">
             <img src="${movie.medium_cover_image}">
         </div>
@@ -150,16 +150,16 @@ fetch('https://randomuser.me/api/')
 
   function addEventClick($element){
     $element.addEventListener('click',function(){
-      showModal();
+      showModal($element);
     })
   }
 
-  function renderMoviesList(list,container){
+  function renderMoviesList(list,container,category){
     
     container.children[0].remove();
     list.forEach((movie)=>{
       // debugger
-       const HTMLString=videoitemtemplate(movie);
+       const HTMLString=videoitemtemplate(movie,category);
       
        const movieElement= createTemplate(HTMLString);
        
@@ -180,11 +180,11 @@ fetch('https://randomuser.me/api/')
 
  // const $actioncontainer = document.querySelector('#action');
  const $actioncontainer = document.querySelector('#action');
- renderMoviesList(actionlist.data.movies,$actioncontainer);
+ renderMoviesList(actionlist.data.movies,$actioncontainer,'action');
   const $dramacontainer = document.getElementById('drama');
-  renderMoviesList(dramalist.data.movies,$dramacontainer);
+  renderMoviesList(dramalist.data.movies,$dramacontainer,'drama');
   const $animationcontainer = document.getElementById('animation');
-  renderMoviesList(animationlist.data.movies,$animationcontainer);
+  renderMoviesList(animationlist.data.movies,$animationcontainer,'animation');
 
   
  
@@ -201,9 +201,11 @@ fetch('https://randomuser.me/api/')
   
  // console.log(videoitemtemplate("src/images/covers/bitcoin.jpg","bitcoin"));
 
-     function showModal(){
+     function showModal($element){
         $overlay.classList.add('active');
         $modal.style.animation='modalIn .8s forwards';
+        const id = $element.dataset.id;
+        const category= $element.dataset.category;
      }
      $hidemodal.addEventListener('click',hideModal);
      function hideModal(){
