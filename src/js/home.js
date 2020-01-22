@@ -197,14 +197,17 @@ fetch('https://randomuser.me/api/')
 
   // const $actioncontainer = document.querySelector('#action');
   const { data: { movies: actionlist } } = await getData(`${BASE_API}list_movies.json?genre=action`);
+  window.localStorage.setItem('actionlist',,JSON.stringify(actionlist));
   const $actioncontainer = document.querySelector('#action');
   renderMoviesList(actionlist, $actioncontainer, 'action');
   
   const { data: { movies: dramalist } } = await getData(`${BASE_API}list_movies.json?genre=drama`);
+  window.localStorage.setItem('dramalist',JSON.stringify(dramalist));
   const $dramacontainer = document.getElementById('drama');
   renderMoviesList(dramalist, $dramacontainer, 'drama');
 
  const { data: { movies: animationlist } } = await getData(`${BASE_API}list_movies.json?genre=animation`);
+ window.localStorage.setItem('animationlist',,JSON.stringify(animationlist));
   const $animationcontainer = document.getElementById('animation');
   renderMoviesList(animationlist, $animationcontainer, 'animation');
  
