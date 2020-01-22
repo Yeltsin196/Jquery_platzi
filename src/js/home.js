@@ -109,9 +109,13 @@ fetch('https://randomuser.me/api/')
     $featuringcontainer.append($loader);
 
     const data= new FormData($form);
-    const pelicula = await getData(`${BASE_API}list_movies.json?limit=1&query_term=${data.get('name')}`);
+    const  {
+      data:{
+        movies:pelicula
+      }
+    } = await getData(`${BASE_API}list_movies.json?limit=1&query_term=${data.get('name')}`);
     
-    const HTMLString= featuringTemplate(pelicula.data.movies[0]);
+    const HTMLString= featuringTemplate(pelicula[0]);
     
     
     $featuringcontainer.innerHTML = HTMLString;
